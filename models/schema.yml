@@ -29,8 +29,7 @@ sources:
               - not_null
           - name: quantity
               
-              
-              
+                            
       - name: product
         identifier: raw_gz_product
         columns:
@@ -54,4 +53,92 @@ sources:
           - name: logcost
           - name: ship_cost
               
+      - name: adwords
+        identifier: raw_gz_adwords
+      - name: bing
+        identifier: raw_gz_bing
+      - name: criteo
+        identifier: raw_gz_criteo
+      - name: facebook
+        identifier: raw_gz_facebook
+
+models:
+  - name: int_campaigns
+    description: add adwords, bing, criteo, facebook datas
+    tests:
+      - unique:
+          column_name: "(date_date || '-' || campaign_key)"
+    columns:
+      - name: date_date
+        tests:
+          - not_null
+      - name: paid_source
+        tests:
+          - not_null
+      - name: campaign_key
+        tests:
+          - not_null
+      - name: campaign_name
+        tests:
+          - not_null
+      - name: ads_cost
+        tests:
+          - not_null
+      - name: impression
+        tests:
+          - not_null
+      - name: click
+        tests:
+          - not_null  
+
+
+  - name: int_campaigns_day
+    description: Günlük bazda toplam reklam maliyeti, gösterim ve tıklama verileri.
+    columns:
+      - name: date_date
+        description: primary key
+        tests:
+          - unique
+          - not_null
+      - name: ads_cost
+        description: Günlük toplam reklam maliyeti.
+        tests:
+          - not_null
+      - name: ads_impression
+        description: Günlük toplam reklam gösterim sayısı.
+        tests:
+          - not_null
+      - name: ads_clicks
+        description: Günlük toplam reklam tıklama sayısı.
+        tests:
+          - not_null 
+
+
+  - name: finance_campaigns_day
+    description: Günlük finansal metrikler ile reklam kampanya maliyetlerini birleştiren mart görünümü.
+    columns:
+      - name: date
+        description: İşlem ve kampanya tarihi (birincil anahtar).
+        tests:
+          - unique
+          - not_null
+      - name: ads_margin
+        description: Operasyonel marjdan reklam maliyetinin çıkarılmasıyla elde edilen net reklam marjı.
+
+  - name: finance_campaigns_month
+    columns:
+      - name: datemonth
+        description: primary key
+        tests:
+          - unique
+          - not_null
+          
+          
+        
+
+          
+          
+          
+          
+     
               
