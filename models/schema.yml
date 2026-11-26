@@ -1,0 +1,57 @@
+version: 2
+sources:
+  - name: raw
+    schema: gz_raw_data
+    description: Greenweez raw data from BigQuery
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: eşşiz product_id
+        config:
+          loaded_at_field: "CAST(date_date AS TIMESTAMP)"
+          freshness:
+            warn_after: {count: 90, period: day}
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || pdt_id)"
+        columns:
+          - name: date_date
+          - name: orders_id
+            description: foreign key
+            tests:
+              - not_null
+          - name: pdt_id
+            description: foreign key
+            tests:
+              - not_null
+          - name: revenue
+            tests:
+              - not_null
+          - name: quantity
+              
+              
+              
+      - name: product
+        identifier: raw_gz_product
+        columns:
+          - name: products_id
+            description: primary key
+            tests:
+            - unique
+            - not_null
+          - name: purchse_price 
+            
+      - name: ship
+        identifier: raw_gz_ship
+        columns:
+          - name: orders_id
+            description: primary key
+            tests:
+              - unique
+              - not_null
+          - name: shipping_fee
+          - name: shipping_fee_1
+          - name: logcost
+          - name: ship_cost
+              
+              
